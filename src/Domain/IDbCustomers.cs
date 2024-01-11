@@ -6,8 +6,8 @@ namespace Domain
     {
         public Customer Get(int id);
         public Customer Add(Customer customer);
-        public Customer Replace(Customer customer);
         public Customer Update(Customer customer);
-        public void Delete();
+        public void Delete(int id);
+        public void Delete(Customer customer);
     }
 }

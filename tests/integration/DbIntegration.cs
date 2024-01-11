@@ -12,8 +12,9 @@ namespace integration
 
             DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
                                                                     .UseSqlite($"Data Source={_DbPath}")
-                                                                    .EnableDetailedErrors(true);          
-            LineTenDbContext context = new LineTenDbContext(dbContextOptionsBuilder.Options);
+                                                                    .EnableDetailedErrors(true);        
+            // We are responsible for the lifetime of the context here.
+            using LineTenDbContext context = new LineTenDbContext(dbContextOptionsBuilder.Options);
             Assert.True(context.Database.EnsureCreated());
             Assert.True(context.Database.EnsureDeleted());
         }

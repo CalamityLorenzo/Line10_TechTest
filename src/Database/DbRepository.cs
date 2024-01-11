@@ -2,11 +2,11 @@
 
 namespace Database
 {
-    internal class DbRepository : IDbRepository
+    public class DbRepository(LineTenDbContext context) : IDbRepository
     {
-      public DbRepository(LineTenDbContext context) { }
+        
 
-        public IDbCustomers Customers => throw new NotImplementedException();
+        public IDbCustomers Customers => new DbCustomers(context);
 
         public IDbProducts Products => throw new NotImplementedException();
 
