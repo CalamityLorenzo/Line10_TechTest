@@ -9,7 +9,7 @@ namespace Database.DbEntities
         public required  string LastName { get; set; }
         public required string Phone { get; set; }
         public required string Email { get; set; }
-        public List<OrderDb> CustomerOrders { get; } = new();
+        public ICollection<OrderDb> CustomerOrders { get; }
 
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace Domain.Db
 {
     public interface IDbRepository
     {

@@ -1,8 +1,7 @@
 ﻿using Database.DbEntities;
-using Domain;
+using Domain.Db;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace Database
 {
@@ -47,7 +46,7 @@ namespace Database
 
         public Product Get(int id)
         {
-            var ProductDb = context.Products.Find(id);
+            var ProductDb = context.Products.AsNoTracking().First(a => a.Id == id);
             return ToClient(ProductDb);
         }
 

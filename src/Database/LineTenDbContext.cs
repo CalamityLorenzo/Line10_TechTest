@@ -1,5 +1,4 @@
 ﻿using Database.DbEntities;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Database
@@ -16,15 +15,23 @@ namespace Database
         {
             // Customer Db Entitiy
             modelBuilder.Entity<CustomerDb>().HasKey(a => a.Id);
-
+            modelBuilder.Entity<CustomerDb>().HasMany(e => e.CustomerOrders)
+                .WithOne(a => a.Customer)
+                .HasForeignKey(a => a.CustomerId)
+                .HasPrincipalKey(a => a.Id);
+                
             // Product Db Entitiy
-            modelBuilder.Entity<Product>().HasKey(a => a.Id);
-
+            modelBuilder.Entity<ProductDb>().HasKey(a => a.Id);
+            modelBuilder.Entity<ProductDb>()
+                .HasMany(p => p.ProductOrders)
+                .WithOne(o => o.Product)
+                .HasForeignKey(o => o.ProductId)
+                .HasPrincipalKey(p => p.Id);
             // Order Db Entitiy
             var orderEntity = modelBuilder.Entity<OrderDb>();
+            //orderEntity.HasOne(a => a.Customer).WithMany(a => a.CustomerOrders).HasForeignKey(a => a.CustomerId).OnDelete(DeleteBehavior.NoAction);
+            //orderEntity.HasOne(a => a.Product).WithMany(a => a.ProductOrders).HasForeignKey(a => a.ProductId).OnDelete(DeleteBehavior.NoAction);
             orderEntity.HasKey(a => new { a.ProductId, a.CustomerId });
-            orderEntity.HasOne(a => a.Customer).WithMany(a => a.CustomerOrders).HasForeignKey(a => a.CustomerId);
-            orderEntity.HasOne(a => a.Product).WithMany(a => a.ProductOrders).HasForeignKey(a => a.ProductId);
         }
     }
 }

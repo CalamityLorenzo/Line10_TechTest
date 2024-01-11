@@ -1,5 +1,5 @@
 ﻿using Database.DbEntities;
-using Domain;
+using Domain.Db;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -57,6 +57,7 @@ namespace Database
         public Customer Update(Customer customer)
         {
             var result = context.Customers.Update(ToDb(customer));
+            context.SaveChanges();
             return ToClient(result.Entity);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Domain
+namespace Domain.Db
 {
     public interface IDbProducts
     {

@@ -4,14 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace integration
 {
-    public class CustomerDbTests
+    public class ProductDbTests
     {
-
-        string _DbPath = "customerTests.db";
-        [Fact(DisplayName = "Add Customer")]
-        public void Add_Customer()
+        string _DbPath = "productTests.db";
+        [Fact(DisplayName = "Add Product")]
+        public void Add_Product()
         {
-            var newCustomer = new Customer("Paul", "Lawrence", "0123456789", "e@mail.com");
+            var newProduct= new Product("Prodcut 1", "PRoduct 1 descrtition", "SKU_1");
 
             DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
                                                                     .UseSqlite($"Data Source={_DbPath}")
@@ -22,8 +21,8 @@ namespace integration
                 {
                     context.Database.EnsureCreated();
                     DbRepository dbRepo = new Database.DbRepository(context);
-                    var dbCustomer = dbRepo.Customers.Add(newCustomer);
-                    Assert.True(dbCustomer.Id > 0);
+                    var dbProduct = dbRepo.Products.Add(newProduct);
+                    Assert.True(dbProduct.Id > 0);
                     context.Database.EnsureDeleted();
                 }
                 catch (Exception ex)
@@ -33,10 +32,10 @@ namespace integration
                 }
         }
 
-        [Fact(DisplayName = "Update Customer")]
-        public void Update_Customer()
+        [Fact(DisplayName = "Update Product")]
+        public void Update_Product()
         {
-            var newCustomer = new Customer("Paul", "Lawrence", "0123456789", "e@mail.com");
+            var newProduct = new Product("Prodcut 1", "PRoduct 1 descrtition", "SKU_1");
 
             DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
                                                                     .UseSqlite($"Data Source={_DbPath}")
@@ -47,10 +46,10 @@ namespace integration
                 {
                     context.Database.EnsureCreated();
                     DbRepository dbRepo = new Database.DbRepository(context);
-                    var dbCustomer = dbRepo.Customers.Add(newCustomer);
-                    newCustomer = newCustomer with { FirstName = "Jerry" };
-                    var updatedCustomer = dbRepo.Customers.Update(newCustomer);
-                    Assert.True(updatedCustomer.FirstName == newCustomer.FirstName);
+                    var dbProduct = dbRepo.Products.Add(newProduct);
+                    newProduct = newProduct with { Name = "Salad" };
+                    var updatedProduct = dbRepo.Products.Update(newProduct);
+                    Assert.True(updatedProduct.Name == newProduct.Name);
                     context.Database.EnsureDeleted();
                 }
                 catch (Exception ex)
@@ -61,14 +60,13 @@ namespace integration
         }
 
 
-        [Fact(DisplayName = "Fetch Customer")]
-        public void Get_Customer()
+        [Fact(DisplayName = "Fetch Product")]
+        public void Get_Product()
         {
+            var newProduct1 = new Product("Product 1", "PRoduct 1 descrtition", "SKU_1");
+            var newProduct2 = new Product("Product 2", "PRoduct 1 descrtition", "SKU_2");
+            var newProduct3 = new Product("Product 3", "PRoduct 1 descrtition", "SKU_3");
 
-
-            var newCustomer1 = new Customer("Paul", "Lawrence", "0123456789", "e@mail.com");
-            var newCustomer2 = new Customer("Jerry", "Lawrence", "0123456789", "e@mail.com");
-            var newCustomer3 = new Customer("Kerry", "Lawrence", "0123456789", "e@mail.com");
 
             DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
                                                                     .UseSqlite($"Data Source={_DbPath}")
@@ -79,13 +77,14 @@ namespace integration
                 {
                     context.Database.EnsureCreated();
                     DbRepository dbRepo = new Database.DbRepository(context);
-                    dbRepo.Customers.Add(newCustomer1);
-                    dbRepo.Customers.Add(newCustomer2);
-                    dbRepo.Customers.Add(newCustomer3);
+                    dbRepo.Products.Add(newProduct1);
+                    dbRepo.Products.Add(newProduct2);
+                    dbRepo.Products.Add(newProduct3);
 
-                    var customer = dbRepo.Customers.Get(2);
+                    var Product = dbRepo.Products.Get(3);
 
-                    Assert.True(customer.FirstName == newCustomer2.FirstName);
+                    Assert.True(Product.Name == newProduct3.Name);
+                    Assert.True(Product.Id>0);
                 }
                 catch (Exception ex)
                 {
@@ -96,12 +95,12 @@ namespace integration
         }
 
 
-        [Fact(DisplayName = "Delete Customer")]
-        public void Delete_Customer()
+        [Fact(DisplayName = "Delete Product")]
+        public void Delete_Product()
         {
-            var newCustomer1 = new Customer("Paul", "Lawrence", "0123456789", "e@mail.com");
-            var newCustomer2 = new Customer("Jerry", "Lawrence", "0123456789", "e@mail.com");
-            var newCustomer3 = new Customer("Kerry", "Lawrence", "0123456789", "e@mail.com");
+            var newProduct1 = new Product("Product 1", "PRoduct 1 descrtition", "SKU_1");
+            var newProduct2 = new Product("Product 2", "PRoduct 1 descrtition", "SKU_2");
+            var newProduct3 = new Product("Product 3", "PRoduct 1 descrtition", "SKU_3");
 
             DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
                                                                     .UseSqlite($"Data Source={_DbPath}")
@@ -114,9 +113,9 @@ namespace integration
                     context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
                     context.Database.EnsureCreated();
                     DbRepository dbRepo = new Database.DbRepository(context);
-                    dbRepo.Customers.Add(newCustomer1);
-                    dbRepo.Customers.Add(newCustomer2);
-                    dbRepo.Customers.Add(newCustomer3);
+                    dbRepo.Products.Add(newProduct1);
+                    dbRepo.Products.Add(newProduct2);
+                    dbRepo.Products.Add(newProduct3);
 
                 }
                 catch (Exception ex)
@@ -135,12 +134,12 @@ namespace integration
 
                     context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
                     DbRepository dbRepo = new Database.DbRepository(context);
-                    dbRepo.Customers.Delete(3);
+                    dbRepo.Products.Delete(3);
 
 
                     var excep = Assert.Throws<System.InvalidOperationException>(() =>
                     {
-                        dbRepo.Customers.Get(3);
+                        dbRepo.Products.Get(3);
                     });
                     // you can get various System.InvalidOperationException errors, ensure we have the correct error.
                     Assert.Equal("Sequence contains no elements", excep.Message);
