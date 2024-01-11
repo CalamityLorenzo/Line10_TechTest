@@ -1,10 +1,14 @@
-﻿namespace Database.DbEntities
+﻿using Domain;
+
+namespace Database.DbEntities
 {
     internal class CustomerDb
     {
         public int Id { get; set; }
-        public int FirstName { get; set; }
-        public int LastName { get; set; }
-        public int PhoneEmail { get; set; }
+        public required string FirstName { get; set; }
+        public required  string LastName { get; set; }
+        public required string PhoneEmail { get; set; }
+        public List<OrderDb> CustomerOrders { get; } = new();
+
     }
 }
