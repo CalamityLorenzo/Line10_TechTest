@@ -2,15 +2,15 @@
 
 namespace Domain
 {
-    public abstract class DbOrders
+    public interface IDbOrders
     {
-        public abstract IEnumerable<Order> GetByCustomer(int id);
-        public abstract IEnumerable<Order> GetByProduct(int id);
-        public abstract IEnumerable<Order> GetByCustomer(Customer customer);
-        public abstract IEnumerable<Order> GetByProduct(Product product);
-        public abstract Order Add(Order customer);
-        public abstract Order Replace(Order customer);
-        public abstract Order Update(Order customer);
-        public abstract void Delete();
+        public IEnumerable<Order> GetByCustomer(int id);
+        public IEnumerable<Order> GetByProduct(int id);
+        public IEnumerable<Order> GetByCustomer(Customer customer);
+        public IEnumerable<Order> GetByProduct(Product product);
+        public Order Add(Order customer);
+        public Order Replace(Order customer);
+        public Order Update(Order customer);
+        public void Delete();
     }
 }

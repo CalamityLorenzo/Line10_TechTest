@@ -1,11 +1,9 @@
-﻿using Domain.Entities;
-
-namespace Domain
+﻿namespace Domain
 {
-    public abstract class DbRepository
+    public interface IDbRepository
     {
-        public DbCustomers Customers { get; }
-        public DbProducts Products { get; }
-        public DbOrders Orders { get; }
+        public IDbCustomers Customers { get; }
+        public IDbProducts Products { get; }
+        public IDbOrders Orders { get; }
     }
 }

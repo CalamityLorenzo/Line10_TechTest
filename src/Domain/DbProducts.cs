@@ -2,13 +2,13 @@
 
 namespace Domain
 {
-    public abstract class DbProducts
+    public interface IDbProducts
     {
-        public abstract Product Get(int id);
-        public abstract Product Add(Product customer);
-        public abstract Product Replace(Product customer);
-        public abstract Product Update(Product customer);
-        public abstract void Delete(Product product);
-        public abstract void Delete(int product);
+        public Product Get(int id);
+        public Product Add(Product customer);
+        public Product Replace(Product customer);
+        public Product Update(Product customer);
+        public void Delete(Product product);
+        public void Delete(int product);
     }
 }

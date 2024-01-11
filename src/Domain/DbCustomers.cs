@@ -2,12 +2,12 @@
 
 namespace Domain
 {
-    public abstract class DbCustomers
+    public interface IDbCustomers
     {
-        public abstract Customer Get(int id);
-        public abstract Customer Add(Customer customer);
-        public abstract Customer Replace(Customer customer);
-        public abstract Customer Update(Customer customer);
-        public abstract void Delete();
+        public Customer Get(int id);
+        public Customer Add(Customer customer);
+        public Customer Replace(Customer customer);
+        public Customer Update(Customer customer);
+        public void Delete();
     }
 }
