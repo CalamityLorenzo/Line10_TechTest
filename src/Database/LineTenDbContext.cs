@@ -9,7 +9,9 @@ namespace Database
         internal DbSet<OrderDb> Orders { get; set; }
         internal DbSet<ProductDb> Products{ get; set; }
 
-        public LineTenDbContext(DbContextOptions options) : base(options) { }
+        //public LineTenDbContext(DbContextOptions options) : base(options) { }
+
+        public LineTenDbContext(DbContextOptions<LineTenDbContext> options): base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

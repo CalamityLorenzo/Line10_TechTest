@@ -13,8 +13,8 @@ namespace integration
         {
             var newCustomer = new Customer("Paul", "Lawrence", "0123456789", "e@mail.com");
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
-                                                                    .UseSqlite($"Data Source={_DbPath}")
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
+                                                                      .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
             using (LineTenDbContext context = new LineTenDbContext(dbContextOptionsBuilder.Options))
@@ -38,7 +38,7 @@ namespace integration
         {
             var newCustomer = new Customer("Paul", "Lawrence", "0123456789", "e@mail.com");
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
@@ -70,7 +70,7 @@ namespace integration
             var newCustomer2 = new Customer("Jerry", "Lawrence", "0123456789", "e@mail.com");
             var newCustomer3 = new Customer("Kerry", "Lawrence", "0123456789", "e@mail.com");
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
@@ -103,8 +103,8 @@ namespace integration
             var newCustomer2 = new Customer("Jerry", "Lawrence", "0123456789", "e@mail.com");
             var newCustomer3 = new Customer("Kerry", "Lawrence", "0123456789", "e@mail.com");
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
-                                                                    .UseSqlite($"Data Source={_DbPath}")
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
+                                                                                .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
             using (LineTenDbContext context = new LineTenDbContext(dbContextOptionsBuilder.Options))

@@ -10,7 +10,7 @@ namespace integration
         public void Instantiate_a_Conn_Repository()
         {
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);        
             // We are responsible for the lifetime of the context here.

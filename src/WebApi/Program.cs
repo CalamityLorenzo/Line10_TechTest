@@ -1,4 +1,9 @@
 
+using Database;
+using Domain.Db;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+
 namespace WebApi
 {
     public class Program
@@ -10,9 +15,20 @@ namespace WebApi
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<LineTenDbContext>((builder) =>
+            {
+                   builder.UseSqlite($"Data Source=LineTen.db") // Should be config.
+                   .EnableDetailedErrors(true);
+            });
+
+            builder.Services.AddScoped<IDbRepository, DbRepository>();
+            builder.Services.AddScoped<DomainRepo>();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+
 
             var app = builder.Build();
 

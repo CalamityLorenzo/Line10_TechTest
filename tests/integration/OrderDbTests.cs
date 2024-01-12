@@ -32,7 +32,7 @@ namespace integration
         {
             var newOrder = new Order(1, 2, "Status", DateTimeOffset.Parse("01/01/2001"), DateTimeOffset.Parse("01/01/2002"));
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
@@ -58,7 +58,7 @@ namespace integration
         {
             var newOrder = new Order(1, 2, "Status", DateTimeOffset.Parse("01/01/2001"), DateTimeOffset.Parse("01/01/2002"));
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
@@ -84,7 +84,7 @@ namespace integration
         {
             var newOrder = new Order(1, 2, "Status A", DateTimeOffset.Parse("01/01/2001"), DateTimeOffset.Parse("01/01/2002"));
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
@@ -123,7 +123,7 @@ namespace integration
         {
             var newOrder = new Order(1, 2, "Status A", DateTimeOffset.Parse("01/01/2001"), DateTimeOffset.Parse("01/01/2002"));
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.

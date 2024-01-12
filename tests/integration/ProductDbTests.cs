@@ -12,7 +12,7 @@ namespace integration
         {
             var newProduct= new Product("Prodcut 1", "PRoduct 1 descrtition", "SKU_1");
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
@@ -37,7 +37,7 @@ namespace integration
         {
             var newProduct = new Product("Prodcut 1", "PRoduct 1 descrtition", "SKU_1");
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
@@ -68,7 +68,7 @@ namespace integration
             var newProduct3 = new Product("Product 3", "PRoduct 1 descrtition", "SKU_3");
 
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
@@ -102,7 +102,7 @@ namespace integration
             var newProduct2 = new Product("Product 2", "PRoduct 1 descrtition", "SKU_2");
             var newProduct3 = new Product("Product 3", "PRoduct 1 descrtition", "SKU_3");
 
-            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
