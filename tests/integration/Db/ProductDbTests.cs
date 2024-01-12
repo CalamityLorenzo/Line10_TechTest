@@ -2,35 +2,15 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace integration
+namespace integration.Db
 {
-    public class OrderDbTests
+    public class ProductDbTests
     {
-        Product newProduct1 = new("Product 1", "PRoduct 1 descrtition", "SKU_1");
-        Product newProduct2 = new("Product 2", "PRoduct 1 descrtition", "SKU_2");
-        Product newProduct3 = new("Product 3", "PRoduct 1 descrtition", "SKU_3");
-
-        Customer newCustomer1 = new("Paul", "Lawrence", "0123456789", "e@mail.com");
-        Customer newCustomer2 = new("Jerry", "Lawrence", "0123456789", "e@mail.com");
-        Customer newCustomer3 = new("Kerry", "Lawrence", "0123456789", "e@mail.com");
-
-
-        void AddOrderInfo(DbRepository repo)
+        string _DbPath = "productTests.db";
+        [Fact(DisplayName = "Add Product")]
+        public void Add_Product()
         {
-            repo.Customers.Add(newCustomer1);
-            repo.Customers.Add(newCustomer2);
-            repo.Customers.Add(newCustomer3);
-
-            repo.Products.Add(newProduct1);
-            repo.Products.Add(newProduct2);
-            repo.Products.Add(newProduct3);
-        }
-
-        string _DbPath = "orderTests.db";
-        [Fact(DisplayName = "Add Order - Success")]
-        public void Add_Order()
-        {
-            var newOrder = new Order(1, 2, "Status", DateTimeOffset.Parse("01/01/2001"), DateTimeOffset.Parse("01/01/2002"));
+            var newProduct = new Product("Prodcut 1", "PRoduct 1 descrtition", "SKU_1");
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
@@ -40,10 +20,9 @@ namespace integration
                 try
                 {
                     context.Database.EnsureCreated();
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    AddOrderInfo(dbRepo);
-                    var dbOrder = dbRepo.Orders.Add(newOrder);
-                    Assert.True(dbOrder.CustomerId == newOrder.CustomerId && dbOrder.ProductId == newOrder.ProductId);
+                    DbRepository dbRepo = new DbRepository(context);
+                    var dbProduct = dbRepo.Products.Add(newProduct);
+                    Assert.True(dbProduct.Id > 0);
                     context.Database.EnsureDeleted();
                 }
                 catch (Exception ex)
@@ -53,10 +32,10 @@ namespace integration
                 }
         }
 
-        [Fact(DisplayName = "Add Order - NoCustomer")]
-        public void Add_Order_NoCustomer_NoProduct()
+        [Fact(DisplayName = "Update Product")]
+        public void Update_Product()
         {
-            var newOrder = new Order(1, 2, "Status", DateTimeOffset.Parse("01/01/2001"), DateTimeOffset.Parse("01/01/2002"));
+            var newProduct = new Product("Prodcut 1", "PRoduct 1 descrtition", "SKU_1");
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
@@ -66,10 +45,11 @@ namespace integration
                 try
                 {
                     context.Database.EnsureCreated();
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    //AddOrderInfo(dbRepo);
-                    // dbRepo.Orders.Add(newOrder);
-                    Assert.Throws<DbUpdateException>(() => { dbRepo.Orders.Add(newOrder); });
+                    DbRepository dbRepo = new DbRepository(context);
+                    var dbProduct = dbRepo.Products.Add(newProduct);
+                    newProduct = newProduct with { Name = "Salad" };
+                    var updatedProduct = dbRepo.Products.Update(newProduct);
+                    Assert.True(updatedProduct.Name == newProduct.Name);
                     context.Database.EnsureDeleted();
                 }
                 catch (Exception ex)
@@ -79,10 +59,14 @@ namespace integration
                 }
         }
 
-        [Fact(DisplayName = "Update Order")]
-        public void Update_Order()
+
+        [Fact(DisplayName = "Fetch Product")]
+        public void Get_Product()
         {
-            var newOrder = new Order(1, 2, "Status A", DateTimeOffset.Parse("01/01/2001"), DateTimeOffset.Parse("01/01/2002"));
+            var newProduct1 = new Product("Product 1", "PRoduct 1 descrtition", "SKU_1");
+            var newProduct2 = new Product("Product 2", "PRoduct 1 descrtition", "SKU_2");
+            var newProduct3 = new Product("Product 3", "PRoduct 1 descrtition", "SKU_3");
+
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
@@ -92,67 +76,70 @@ namespace integration
                 try
                 {
                     context.Database.EnsureCreated();
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    AddOrderInfo(dbRepo);
-                    dbRepo.Orders.Add(newOrder);
-                }
-                catch (Exception ex)
-                {
-                    context.Database.EnsureDeleted();
-                    throw;
-                }
-            using (LineTenDbContext context = new LineTenDbContext(dbContextOptionsBuilder.Options))
-                try
-                {
+                    DbRepository dbRepo = new DbRepository(context);
+                    dbRepo.Products.Add(newProduct1);
+                    dbRepo.Products.Add(newProduct2);
+                    dbRepo.Products.Add(newProduct3);
 
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    var newDbRecord = dbRepo.Orders.Get(2,1);
-                    
-                    var updatedDbRecord = dbRepo.Orders.Update(newDbRecord with { Status = "Status Wink"});
-                    Assert.True(updatedDbRecord.Status == "Status Wink");
+                    var Product = dbRepo.Products.Get(3);
+
+                    Assert.True(Product.Name == newProduct3.Name);
+                    Assert.True(Product.Id > 0);
                 }
                 catch (Exception ex)
                 {
                     context.Database.EnsureDeleted();
                     throw;
                 }
+
         }
 
-        [Fact(DisplayName = "Delete Order")]
-        public void Delete_Order()
+
+        [Fact(DisplayName = "Delete Product")]
+        public void Delete_Product()
         {
-            var newOrder = new Order(1, 2, "Status A", DateTimeOffset.Parse("01/01/2001"), DateTimeOffset.Parse("01/01/2002"));
+            var newProduct1 = new Product("Product 1", "PRoduct 1 descrtition", "SKU_1");
+            var newProduct2 = new Product("Product 2", "PRoduct 1 descrtition", "SKU_2");
+            var newProduct3 = new Product("Product 3", "PRoduct 1 descrtition", "SKU_3");
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
             using (LineTenDbContext context = new LineTenDbContext(dbContextOptionsBuilder.Options))
+            {
                 try
                 {
+                    context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
                     context.Database.EnsureCreated();
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    AddOrderInfo(dbRepo);
-                    dbRepo.Orders.Add(newOrder);
+                    DbRepository dbRepo = new DbRepository(context);
+                    dbRepo.Products.Add(newProduct1);
+                    dbRepo.Products.Add(newProduct2);
+                    dbRepo.Products.Add(newProduct3);
+
                 }
                 catch (Exception ex)
                 {
                     context.Database.EnsureDeleted();
                     throw;
+
                 }
 
+            }
+
             using (LineTenDbContext context = new LineTenDbContext(dbContextOptionsBuilder.Options))
+            {
                 try
                 {
 
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    var newDbRecord = dbRepo.Orders.Get(2, 1);
+                    context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+                    DbRepository dbRepo = new DbRepository(context);
+                    dbRepo.Products.Delete(3);
 
-                    dbRepo.Orders.Delete(newDbRecord);
 
-                    var excep = Assert.Throws<System.InvalidOperationException>(() =>
+                    var excep = Assert.Throws<InvalidOperationException>(() =>
                     {
-                        dbRepo.Orders.Get(2,1);
+                        dbRepo.Products.Get(3);
                     });
                     // you can get various System.InvalidOperationException errors, ensure we have the correct error.
                     Assert.Equal("Sequence contains no elements", excep.Message);
@@ -161,9 +148,15 @@ namespace integration
                 {
                     context.Database.EnsureDeleted();
                     throw;
+
                 }
+                context.Database.EnsureDeleted();
+
+            }
+
+
+
         }
+
     }
-
 }
-

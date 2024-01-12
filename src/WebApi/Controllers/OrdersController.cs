@@ -10,7 +10,7 @@ namespace WebApi.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly DomainRepo domainRepo;
-        OrdersController(DomainRepo domainRepo)
+        public OrdersController(DomainRepo domainRepo)
         {
             this.domainRepo = domainRepo;
         }
@@ -41,10 +41,6 @@ namespace WebApi.Controllers
             try
             {
                 return domainRepo.Orders.Add(order);
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(404);
             }
             catch (Exception ex)
             {

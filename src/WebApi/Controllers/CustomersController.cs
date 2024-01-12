@@ -9,7 +9,7 @@ namespace WebApi.Controllers
     {
         private readonly DomainRepo domainRepo;
 
-        CustomersController(DomainRepo domainRepo)
+        public CustomersController(DomainRepo domainRepo)
         {
             this.domainRepo = domainRepo;
         }
@@ -68,10 +68,11 @@ namespace WebApi.Controllers
         [HttpPost("delete/{customerId}")]
         public ActionResult Delete(int customerId)
         {
-            try { 
-            
+            try
+            {
+
                 var customer = domainRepo.Customers.Get(customerId);
-                 domainRepo.Customers.Delete(customer);
+                domainRepo.Customers.Delete(customer);
                 return StatusCode(200);
             }
             catch (ArgumentOutOfRangeException ex)

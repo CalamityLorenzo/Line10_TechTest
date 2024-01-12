@@ -2,27 +2,28 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace integration
+namespace integration.Db
 {
-    public class ProductDbTests
+    public class CustomerDbTests
     {
-        string _DbPath = "productTests.db";
-        [Fact(DisplayName = "Add Product")]
-        public void Add_Product()
+
+        string _DbPath = "customerTests.db";
+        [Fact(DisplayName = "Add Customer")]
+        public void Add_Customer()
         {
-            var newProduct= new Product("Prodcut 1", "PRoduct 1 descrtition", "SKU_1");
+            var newCustomer = new Customer("Paul", "Lawrence", "0123456789", "e@mail.com");
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
-                                                                    .UseSqlite($"Data Source={_DbPath}")
+                                                                      .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
             using (LineTenDbContext context = new LineTenDbContext(dbContextOptionsBuilder.Options))
                 try
                 {
                     context.Database.EnsureCreated();
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    var dbProduct = dbRepo.Products.Add(newProduct);
-                    Assert.True(dbProduct.Id > 0);
+                    DbRepository dbRepo = new DbRepository(context);
+                    var dbCustomer = dbRepo.Customers.Add(newCustomer);
+                    Assert.True(dbCustomer.Id > 0);
                     context.Database.EnsureDeleted();
                 }
                 catch (Exception ex)
@@ -32,10 +33,10 @@ namespace integration
                 }
         }
 
-        [Fact(DisplayName = "Update Product")]
-        public void Update_Product()
+        [Fact(DisplayName = "Update Customer")]
+        public void Update_Customer()
         {
-            var newProduct = new Product("Prodcut 1", "PRoduct 1 descrtition", "SKU_1");
+            var newCustomer = new Customer("Paul", "Lawrence", "0123456789", "e@mail.com");
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
@@ -45,11 +46,11 @@ namespace integration
                 try
                 {
                     context.Database.EnsureCreated();
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    var dbProduct = dbRepo.Products.Add(newProduct);
-                    newProduct = newProduct with { Name = "Salad" };
-                    var updatedProduct = dbRepo.Products.Update(newProduct);
-                    Assert.True(updatedProduct.Name == newProduct.Name);
+                    DbRepository dbRepo = new DbRepository(context);
+                    var dbCustomer = dbRepo.Customers.Add(newCustomer);
+                    newCustomer = newCustomer with { FirstName = "Jerry" };
+                    var updatedCustomer = dbRepo.Customers.Update(newCustomer);
+                    Assert.True(updatedCustomer.FirstName == newCustomer.FirstName);
                     context.Database.EnsureDeleted();
                 }
                 catch (Exception ex)
@@ -60,13 +61,14 @@ namespace integration
         }
 
 
-        [Fact(DisplayName = "Fetch Product")]
-        public void Get_Product()
+        [Fact(DisplayName = "Fetch Customer")]
+        public void Get_Customer()
         {
-            var newProduct1 = new Product("Product 1", "PRoduct 1 descrtition", "SKU_1");
-            var newProduct2 = new Product("Product 2", "PRoduct 1 descrtition", "SKU_2");
-            var newProduct3 = new Product("Product 3", "PRoduct 1 descrtition", "SKU_3");
 
+
+            var newCustomer1 = new Customer("Paul", "Lawrence", "0123456789", "e@mail.com");
+            var newCustomer2 = new Customer("Jerry", "Lawrence", "0123456789", "e@mail.com");
+            var newCustomer3 = new Customer("Kerry", "Lawrence", "0123456789", "e@mail.com");
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
@@ -76,15 +78,14 @@ namespace integration
                 try
                 {
                     context.Database.EnsureCreated();
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    dbRepo.Products.Add(newProduct1);
-                    dbRepo.Products.Add(newProduct2);
-                    dbRepo.Products.Add(newProduct3);
+                    DbRepository dbRepo = new DbRepository(context);
+                    dbRepo.Customers.Add(newCustomer1);
+                    dbRepo.Customers.Add(newCustomer2);
+                    dbRepo.Customers.Add(newCustomer3);
 
-                    var Product = dbRepo.Products.Get(3);
+                    var customer = dbRepo.Customers.Get(2);
 
-                    Assert.True(Product.Name == newProduct3.Name);
-                    Assert.True(Product.Id>0);
+                    Assert.True(customer.FirstName == newCustomer2.FirstName);
                 }
                 catch (Exception ex)
                 {
@@ -95,15 +96,15 @@ namespace integration
         }
 
 
-        [Fact(DisplayName = "Delete Product")]
-        public void Delete_Product()
+        [Fact(DisplayName = "Delete Customer")]
+        public void Delete_Customer()
         {
-            var newProduct1 = new Product("Product 1", "PRoduct 1 descrtition", "SKU_1");
-            var newProduct2 = new Product("Product 2", "PRoduct 1 descrtition", "SKU_2");
-            var newProduct3 = new Product("Product 3", "PRoduct 1 descrtition", "SKU_3");
+            var newCustomer1 = new Customer("Paul", "Lawrence", "0123456789", "e@mail.com");
+            var newCustomer2 = new Customer("Jerry", "Lawrence", "0123456789", "e@mail.com");
+            var newCustomer3 = new Customer("Kerry", "Lawrence", "0123456789", "e@mail.com");
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
-                                                                    .UseSqlite($"Data Source={_DbPath}")
+                                                                                .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
             using (LineTenDbContext context = new LineTenDbContext(dbContextOptionsBuilder.Options))
@@ -112,10 +113,10 @@ namespace integration
                 {
                     context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
                     context.Database.EnsureCreated();
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    dbRepo.Products.Add(newProduct1);
-                    dbRepo.Products.Add(newProduct2);
-                    dbRepo.Products.Add(newProduct3);
+                    DbRepository dbRepo = new DbRepository(context);
+                    dbRepo.Customers.Add(newCustomer1);
+                    dbRepo.Customers.Add(newCustomer2);
+                    dbRepo.Customers.Add(newCustomer3);
 
                 }
                 catch (Exception ex)
@@ -133,13 +134,13 @@ namespace integration
                 {
 
                     context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-                    DbRepository dbRepo = new Database.DbRepository(context);
-                    dbRepo.Products.Delete(3);
+                    DbRepository dbRepo = new DbRepository(context);
+                    dbRepo.Customers.Delete(3);
 
 
-                    var excep = Assert.Throws<System.InvalidOperationException>(() =>
+                    var excep = Assert.Throws<InvalidOperationException>(() =>
                     {
-                        dbRepo.Products.Get(3);
+                        dbRepo.Customers.Get(3);
                     });
                     // you can get various System.InvalidOperationException errors, ensure we have the correct error.
                     Assert.Equal("Sequence contains no elements", excep.Message);
