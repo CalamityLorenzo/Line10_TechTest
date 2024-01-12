@@ -44,7 +44,7 @@ namespace integration.Db
                     AddOrderInfo(dbRepo);
                     var dbOrder = dbRepo.Orders.Add(newOrder);
                     Assert.True(dbOrder.CustomerId == newOrder.CustomerId && dbOrder.ProductId == newOrder.ProductId);
-                    context.Database.EnsureDeleted();
+                    //context.Database.EnsureDeleted();
                 }
                 catch (Exception ex)
                 {
@@ -58,7 +58,7 @@ namespace integration.Db
         {
             var newOrder = new Order(1, 0, "Status", DateTimeOffset.Parse("01/01/2001"), DateTimeOffset.Parse("01/01/2002"));
 
-            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()W
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
