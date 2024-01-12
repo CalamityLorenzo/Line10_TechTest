@@ -58,7 +58,7 @@ namespace integration.Db
         {
             var newOrder = new Order(1, 0, "Status", DateTimeOffset.Parse("01/01/2001"), DateTimeOffset.Parse("01/01/2002"));
 
-            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LineTenDbContext>()W
                                                                     .UseSqlite($"Data Source={_DbPath}")
                                                                     .EnableDetailedErrors(true);
             // We are responsible for the lifetime of the context here.
